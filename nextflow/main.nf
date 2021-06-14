@@ -29,21 +29,19 @@ process find {
 
   input:
   tuple(val(seed), val(cores)) from input_ch
-  // the following images are constant across all versions of this process
-  // so just use a "static" or "ad hoc" channel
-  path(image) from Channel.value(params.image)
-  path(bkg) from Channel.value(params.bkg)
-  path(rms) from Channel.value(params.rms)
+  path(image) from Channel.fromPath(params.image)
+  path(bkg) from Channel.fromPath(params.bkg)
+  path(rms) from Channel.fromPath(params.rms)
 
   output:
   file("*.csv") into files_ch
-  // indicate that this process should be allocated a specific number of cores
   cpus "${cores}"
 
   script:
   """
   aegean ${image} --background=${bkg} --noise=${rms} --table=out.csv \
-    --seedclip=${seed} --cores=${cores}
+  --seedclip=${seed} --cores=${cores}
+
   mv out_comp.csv table_${seed}_${cores}.csv
   """
 }
