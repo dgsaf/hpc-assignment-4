@@ -22,14 +22,9 @@ log.info """\
 seeds = Channel.of(5, 10)
 ncores = Channel.of(1, 2)
 
-// Create the "cross product" of our two channels into one channel of tuples
-// if seeds/cores are (5,10) and (1,2) then this new channel should consist of
-// (5,1), (5,2), (10,1), (10,2). Tip. Use input_ch.view() to print the channel
-// contents before moving to the next step
-input_ch = seeds.cross(ncores)
+input_ch = seeds.combine(ncores)
 
 input_ch.view()
-input_ch.subscribe{x -> println "input_ch: emit $x"}
 
 // comment out the rest of the code just for testing
 /*
