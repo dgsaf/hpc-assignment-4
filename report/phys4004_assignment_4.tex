@@ -35,6 +35,8 @@ The entire code repository can be found at
 \section{Interpretation}
 \label{sec:interpretation}
 
+The \lstinline{count} process is presented in \autoref{lst:count}.
+
 \lstinputlisting[
 label={lst:count}
 , caption={
@@ -45,6 +47,42 @@ label={lst:count}
 , linerange={48-69}
 , firstnumber=48
 ]{../nextflow/main.nf}
+
+\begin{enumerate}[i.]
+\item
+  \lstinline[otherkeywords={>}]!echo "seed,ncores,nsrc" > results.csv!
+
+\item
+  \lstinline[otherkeywords={>>}]!echo "${seed},${cores},${nsrc}" >> results.csv!
+
+\item
+  \lstinline[otherkeywords={|}]!cat ${f} | wc -l!
+
+\item
+  \lstinline!$(<command>)! and \lstinline!($(<command>))!
+
+\item
+  \lstinline!$(ls table*.csv)!
+
+\item
+  \lstinline!echo ${f}!
+
+\item
+  \lstinline!tr '_.' ' '!
+
+\item
+  \lstinline!awk '{print $2 " " $3}'!
+
+\item
+  \lstinline!cat ${f}!
+
+\item
+  \lstinline!wc -l!
+
+\item
+  \lstinline!echo "$(cat ${f} | wc -l)-1" | bc -l!
+
+\end{enumerate}
 
 \clearpage
 
@@ -113,7 +151,6 @@ label={lst:count}
   }
   \label{fig:snr-plot}
 \end{figure}
-
 
 \subsection{Workflow DAG}
 \label{sec:workflow-dag}
