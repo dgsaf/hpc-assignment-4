@@ -78,7 +78,7 @@ label={lst:count}
 , firstnumber=75
 ]{../nextflow/main.nf}
 
-\subsection{XARGS Command }
+\subsection{xargs Command}
 \label{sec:xargs-command}
 
 \lstinputlisting[
@@ -94,6 +94,21 @@ label={lst:count}
 
 \section{Execution}
 \label{sec:execution}
+
+\subsection{SNR Plot}
+\label{sec:snr-plot}
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[scale = 0.75]{../nextflow/output/plot_1.png}
+  \caption[SNR Plot]{
+    The Signal-to-Noise Ratio (SNR) is presented for a range of seed SNR values.
+    This figure was produced by
+    \lstinline[morekeywords={process}]{process plot_for}, for the case of
+    \lstinline{cores = 1}.
+  }
+  \label{fig:snr-plot}
+\end{figure}
 
 \section{Analysis}
 \label{sec:analysis}
