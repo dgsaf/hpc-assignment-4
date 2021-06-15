@@ -100,15 +100,36 @@ label={lst:count}
 
 \begin{figure}[h]
   \centering
-  \includegraphics[scale = 0.75]{../nextflow/output/plot_1.png}
+  \includegraphics[scale = 0.75]{../nextflow/output/plot_for_1.png}
   \caption[SNR Plot]{
     The Signal-to-Noise Ratio (SNR) is presented for a range of seed SNR values.
     This figure was produced by
     \lstinline[morekeywords={process}]{process plot_for}, for the case of
     \lstinline{cores = 1}.
+    No difference was observed between this plot and any of the other plots
+    produced for any value of \lstinline{cores}, nor whether if
+    \lstinline[morekeywords={process}]{process plot_for} or if
+    \lstinline[morekeywords={process}]{process plot_xargs} were used.
   }
   \label{fig:snr-plot}
 \end{figure}
+
+
+\subsection{Workflow DAG}
+\label{sec:workflow-dag}
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[scale = 0.4]{../nextflow/logs/final_dag.png}
+  \caption[Workflow DAG]{
+    The Directed Acyclic Graph (DAG) of the workflow is presented.
+    Note that the \lstinline{combine} operator (below \lstinline{Channel.of})
+    appears to have been cropped out by the tool producing the DAG.
+  }
+  \label{fig:workflow-dag}
+\end{figure}
+
+\clearpage
 
 \section{Analysis}
 \label{sec:analysis}
