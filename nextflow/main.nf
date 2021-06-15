@@ -19,13 +19,12 @@ log.info """\
          .stripIndent()
 
 // input channel
-seeds = Channel.of(5, 10)
-ncores = Channel.of(1, 2)
+seeds = Channel.of(5 .. 95).filter{it % 5 == 0}
+ncores = Channel.of(1, 2, 4, 7)
 input_ch = seeds.combine(ncores)
 
 // find
 process find {
-  echo true
   input:
   path(image) from params.image
   path(bkg) from params.bkg
