@@ -1,7 +1,7 @@
 #! /usr/bin/env nextflow
 
 // header
-version = "0.1"
+version = "1.0"
 date = "2021-06-14"
 author = "Tom Ross"
 
