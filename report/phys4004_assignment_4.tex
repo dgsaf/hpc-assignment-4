@@ -52,26 +52,75 @@ label={lst:count}
 \item
   \lstinline[otherkeywords={>}]!echo "seed,ncores,nsrc" > results.csv!
 
+  The output of the left hand side (SNR seed, number of cores used and number of
+  sources counted) which would normally be sent to \lstinline{stdout} is
+  redirected to the destination specified on the right hand side (in this case,
+  a file called \lilf{results.csv}) creating/overwriting the file in the
+  process.
+
 \item
   \lstinline[otherkeywords={>>}]!echo "${seed},${cores},${nsrc}" >> results.csv!
+
+  Similar to the effect of \lstinline[otherkeywords={>}]!>! above, except that
+  this operator appends to the file, rather than overwriting it.
 
 \item
   \lstinline[otherkeywords={|}]!cat ${f} | wc -l!
 
+  The output of the left hand (normally send to \lstinline{stdout}) is
+  \textit{piped} to input of the right hand side; that is, the input of
+  \lstinline{wc -l} is taken from the output of \lstinline!cat ${f}!.
+  This effect of this command is to count the number of lines in the file with
+  filepath \lstinline!${f}!.
+
 \item
   \lstinline!$(<command>)! and \lstinline!($(<command>))!
+
+  Wrapping a shell command with a single pair of parentheses,
+  \lstinline!(<command>)! executes that command in a sub-shell - prefixing this
+  with a dollar sign captures the final output of that subshell
+  \lstinline!$(<command>)!.
+  However if the result of this is a list of whitespace-delimited strings,
+  wrapping this in a further set of parentheses, \lstinline!($(<command>))!,
+  will capture the output as an array variable.
 
 \item
   \lstinline!$(ls table*.csv)!
 
+  The effect of \lstinline!ls table*.csv! is to list all files in the current
+  directory which start with \lstinline!table! and end with \lstinline!.csv!.
+  The effect of \lstinline!$(ls table*.csv)! is to capture this list of matching
+  files as a string.
+  Specifically, it collects the files containing tables of counted sources for
+  all combinations of \lstinline{seed} and \lstinline{cores}.
+
 \item
   \lstinline!echo ${f}!
+
+  The effect of this command is to output (to \lstinline{stdout}) the
+  string-value of the variable \lstinline{f}.
+  Specifically, this outputs the filepath of a specific file, which is taken
+  from the list of tables described above, and will be of the form
+  \lstinline!table_<seeds>_<cores>.csv!.
 
 \item
   \lstinline!tr '_.' ' '!
 
+  The effect of this command is, for a given input, to translate all instances
+  of the characters \lstinline!_! and \lstinline!.! into whitespace.
+  Specifically this transforms \lstinline!table_<seeds>_<cores>.csv! into
+  \lstinline!table <seeds> <cores> csv!.
+
 \item
   \lstinline!awk '{print $2 " " $3}'!
+
+  The effect of this command is, for a given input consisting of lines
+  (delimited by \lstinline!\n!) containing records (delimited by whitespace), to
+  print the second record, followed by a white space, followed by the third
+  record, for each line in the input.
+  Specifically, this transforms \lstinline!table <seeds> <cores> csv! into
+  \lstinline!<seeds> <cores>!.
+
 
 \item
   \lstinline!cat ${f}!
@@ -81,6 +130,9 @@ label={lst:count}
 
 \item
   \lstinline!echo "$(cat ${f} | wc -l)-1" | bc -l!
+
+% \item
+%   remove this \lstinline!cat ${f}!
 
 \end{enumerate}
 
