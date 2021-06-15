@@ -121,15 +121,28 @@ label={lst:count}
   Specifically, this transforms \lstinline!table <seeds> <cores> csv! into
   \lstinline!<seeds> <cores>!.
 
-
 \item
   \lstinline!cat ${f}!
+
+  The effect of this command is to output the contents of the file, with
+  filepath \lstinline!${f}! - specifically
+  \lstinline!table_<seeds>_<cores>.csv!.
 
 \item
   \lstinline!wc -l!
 
+  The effect of this command is to, for a given input, count the number of
+  newlines (occurences of \lstinline!\n!) in the input.
+  Specifically, this counts the number of newlines in the file
+  \lstinline!table_<seeds>_<cores>.csv!.
+
 \item
   \lstinline!echo "$(cat ${f} | wc -l)-1" | bc -l!
+
+  The effect of this command is to count the number of sources in the file
+  \lstinline!table_<seeds>_<cores>.csv!, by first counting the number of lines
+  in the file, and then subtracting for the number of lines which are not source
+  data records.
 
 % \item
 %   remove this \lstinline!cat ${f}!
