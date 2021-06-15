@@ -69,7 +69,7 @@ process count {
 }
 
 // duplicate counted channel for both plot methods
-counted_ch.into{ counted_for_ch; counted_xargs_ch }
+counted_ch.into{counted_for_ch; counted_xargs_ch}
 
 // plot (for loop)
 process plot_for {

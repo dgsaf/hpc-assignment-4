@@ -1,4 +1,4 @@
-\documentclass[draft]{article}
+\documentclass{article}
 
 % - style template
 \usepackage{base}
@@ -35,8 +35,62 @@ The entire code repository can be found at
 \section{Interpretation}
 \label{sec:interpretation}
 
+\lstinputlisting[
+label={lst:count}
+, caption={
+  The process \lstinline{process count} in \lilf{nextflow/main.nf}.
+}
+, language=
+, morekeywords={process, input, output, container, shell, from, into}
+, linerange={48-69}
+, firstnumber=48
+]{../nextflow/main.nf}
+
+\clearpage
+
 \section{Development}
 \label{sec:development}
+
+\lstinputlisting[
+label={lst:count}
+, caption={
+  The channel \lstinline{counted_ch} is duplicated, with one for each of
+  \lstinline{process plot_for}, and \lstinline{process plot_xargs}, in
+  \lilf{nextflow/main.nf}.
+}
+, language=
+, morekeywords={process, input, output, container, shell, from, into}
+, linerange={72-72}
+, firstnumber=72
+]{../nextflow/main.nf}
+
+\subsection{Bash For Loop}
+\label{sec:bash-for-loop}
+
+\lstinputlisting[
+label={lst:count}
+, caption={
+  The process \lstinline{process plot_for} in \lilf{nextflow/main.nf}.
+}
+, language=
+, morekeywords={process, input, output, container, shell, from, into}
+, linerange={75-93}
+, firstnumber=75
+]{../nextflow/main.nf}
+
+\subsection{XARGS Command }
+\label{sec:xargs-command}
+
+\lstinputlisting[
+label={lst:count}
+, caption={
+  The process \lstinline{process plot_for} in \lilf{nextflow/main.nf}.
+}
+, language=
+, morekeywords={process, input, output, container, shell, from, into}
+, linerange={96-113}
+, firstnumber=96
+]{../nextflow/main.nf}
 
 \section{Execution}
 \label{sec:execution}
