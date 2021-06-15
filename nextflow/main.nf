@@ -68,14 +68,16 @@ process count {
   '''
 }
 
+// duplicate counted channel for both plot methods
+counted_ch.into{ counted_for_ch; counted_xargs_ch }
 
-// plot
-process plot {
+// plot (for loop)
+process plot_for {
   input:
-  path(table) from counted_ch
+  path(table) from counted_for_ch
 
   output:
-  file("*.png") into final_ch
+  file("*.png") into final_for_ch
 
   cpus 4
 
@@ -85,7 +87,27 @@ process plot {
 
   for ncores in $ncores_set ; do
     python !{projectDir}/plot_completeness.py \
-    --infile !{table} --outfile plot_${ncores}.png --cores $ncores
+    --infile !{table} --outfile plot_for_${ncores}.png --cores $ncores
   done
+  '''
+}
+
+// plot (with xargs)
+process plot_xargs {
+  input:
+  path(table) from counted_xargs_ch
+
+  output:
+  file("*.png") into final_xargs_ch
+
+  cpus 4
+
+  shell:
+  '''
+  ncores_set=$(awk -F, '{if (NR != 1) {print $2}}' !{table} | sort | uniq)
+
+  printf '%s ' $ncores_set | xargs -n1 -P4 -I ncores -d ' ' \
+  python !{projectDir}/plot_completeness.py \
+  --infile !{table} --outfile plot_xargs_ncores.png --cores ncores
   '''
 }
