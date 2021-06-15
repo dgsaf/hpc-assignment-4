@@ -38,7 +38,6 @@ process find {
 
   script:
   """
-  echo $seed $cores
   aegean ${image} --background=${bkg} --noise=${rms} --table=out.csv \
   --seedclip=${seed} --cores=${cores}
 
@@ -70,7 +69,7 @@ process count {
   '''
 }
 
-/*
+
 // plot
 process plot {
   input:
@@ -81,8 +80,13 @@ process plot {
 
   cpus 4
 
-  script:
-  """
-  """
+  shell:
+  '''
+  ncores_set=$(awk -F, '{if (NR != 1) {print $2}}' !{table} | sort | uniq)
+
+  for ncores in $ncores_set ; do
+    python !{projectDir}/plot_completeness.py \
+    --infile !{table} --outfile plot_${ncores}.png --cores $ncores
+  done
+  '''
 }
-*/
