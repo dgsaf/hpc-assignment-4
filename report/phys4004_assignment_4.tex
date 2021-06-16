@@ -28,8 +28,6 @@ The entire code repository can be found at
 
 \listoffigures
 
-\listoftables
-
 \clearpage
 
 \section{Interpretation}
@@ -187,7 +185,7 @@ label={lst:count}
 \lstinputlisting[
 label={lst:count}
 , caption={
-  The process \lstinline{process plot_for} in \lilf{nextflow/main.nf}.
+  The process \lstinline{process plot_xargs} in \lilf{nextflow/main.nf}.
 }
 , language=
 , morekeywords={process, input, output, container, shell, from, into}
@@ -235,5 +233,88 @@ label={lst:count}
 
 \section{Analysis}
 \label{sec:analysis}
+
+\subsection{Resource Usage}
+\label{sec:resource-usage}
+
+\subsubsection{CPU Usage}
+\label{sec:cpu-usage}
+
+The CPU usage was fairly high across all processes: with a median single-core
+CPU usage of 77.6\% for \lstinline{find},  73.7\% for \lstinline{count}, and
+90.8\% and 93.5\% for \lstinline{plot_for}, and \lstinline{plot_xargs}
+respectively.
+Notably the process \lstinline{find} had the widest range of CPU usage, ranging
+from a minimum of 61.9\% to 81.0\%.
+Overall, these statistics suggest a fairly good single-core CPU utilisation,
+although perhaps the processes \lstinline{find} and \lstinline{count} could be
+further optimised.
+
+However, the usage of all allocated CPUs, by the processes \lstinline{plot_for}
+and \lstinline{plot_xargs}, was 22.7\% and 23.4\% respectively.
+It is seen in \autoref{sec:io-usage} that these processes are heavily involved
+in I/O operations - which would explain why the single-core CPU usage of these
+processes is rather good, while the load-balancing among cores is not.
+Many of the cores will be idle while reading and writing operations are
+being performed.
+
+\subsubsection{Memory Usage}
+\label{sec:memory-usage}
+
+The process \lstinline{find} utilised the largest amount of memory, with a
+median memory usage of \SI{224.9}{M}, extending up to a maximum of
+\SI{320.9}{M}.
+For the other processes, \lstinline{count} had a rather insignificant memory
+usage of \SI{4.379}{M}, while \lstinline{plot_for} and \lstinline{plot_xargs}
+used \SI{60.3}{M} and \SI{117.5}{M} respectively.
+Notably the xargs version of the plotting process was more memory intensive than
+the bash for loop version - this reflects that it uses parallel processes to
+iterate through the plotting, while the for loop iterates serially.
+
+\subsubsection{Time Usage}
+\label{sec:time-usage}
+
+The process \lstinline{find} accounted for the majority of execution time,
+averaging from approximately \SIrange{6}{7}{\second} per task for small SNR seed
+values to approximately \SI{5}{\second} for larger SNR seed values.
+The process \lstinline{count} accounted for a negligble amount of execution
+time, requiring only \SI{1.8}{\second}, while the processes
+\lstinline{plot_for} and \lstinline{plot_xargs} both required approximately
+\SI{4.8}{\second} of execution time.
+
+This is unexpected, as one would imagine the xargs version to be faster, given
+that it executed 4 parallel processes, while the bash loop executed the same 4
+processes serially.
+However, we note that since the I/O usage is the limiting factor for the
+\lstinline{plot} processes, specifically reading plain text files from disk
+(discussed in \autoref{sec:io-usage}).
+Hence, it doesn't that the process are run in parallel, since they will all be
+bottlenecked by the read speed - essentially causing the parallel processes to
+run serially, as each waits in queue for its data to be read.
+
+\subsubsection{I/O Usage}
+\label{sec:io-usage}
+
+The I/O usage was dominated by the processes \lstinline{plot_for} and
+\lstinline{plot_xargs} reading from file, with a total of \SI{49.39}{M} being
+read for each process.
+This is to be expected, as the plotting is performed using data stored in a
+plain-text file.
+The process \lstinline{count} used a neglible amount of I/O, while
+\lstinline{find} read approximately \SI{24.5}{M} per task.
+
+\subsection{Areas for Improvement}
+\label{sec:areas-improvement}
+
+The \% usage of all allocated CPUs, by the \lstinline{plot} processes requires
+addressing - specifically, to minimise the percentage of time spent performing
+I/O.
+Currently the script \lilf{plot_completeness.py} is executed to produce a plot
+for a given value of \listinline{cores} numerous times - causing numerous reads
+of the same file.
+This could be improved by modifying the script to instead produce plots for all
+cores values in one execution, which would eliminate duplicate file reads, thus
+minimising I/O and improving the \% usage of allocated CPUs.
+
 
 \end{document}
