@@ -143,7 +143,8 @@ label={lst:count}
   data records.
 
 % \item
-%   remove this \lstinline!cat ${f}!
+%   This is simply to prevent editor syntax highlighting issues further down
+%   resulting from an unmatched dollar sign. \lstinline!cat ${f}!
 
 \end{enumerate}
 
@@ -310,11 +311,10 @@ The \% usage of all allocated CPUs, by the \lstinline{plot} processes requires
 addressing - specifically, to minimise the percentage of time spent performing
 I/O.
 Currently the script \lilf{plot_completeness.py} is executed to produce a plot
-for a given value of \listinline{cores} numerous times - causing numerous reads
+for a given value of \lstinline{cores} numerous times - causing numerous reads
 of the same file.
 This could be improved by modifying the script to instead produce plots for all
 cores values in one execution, which would eliminate duplicate file reads, thus
 minimising I/O and improving the \% usage of allocated CPUs.
-
 
 \end{document}
