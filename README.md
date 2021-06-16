@@ -3,6 +3,7 @@
 ## Contents
   The location of the items relevant for submission:
   - `report/`
+    - `phys4004_assignment_4.pdf`
   - `nextflow/`
     - `main.nf`
     - `nextflow.config`
